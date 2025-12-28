@@ -1,83 +1,59 @@
-import java.util.Objects;
-
-public class Bus {
-    private String id;
+//бас екстендить все с транспорта
+public class Bus extends Transport {
     private String routeNumber;
-    private int capacity;
     private int currentPassengers;
-    private boolean inService;
-
-    public Bus() {
-        this("UNKNOWN", "0", 40, 0, true);
-    }
 
     public Bus(String id, String routeNumber, int capacity) {
         this(id, routeNumber, capacity, 0, true);
     }
-
+    //берет атрибуты с класса транспорта
     public Bus(String id, String routeNumber, int capacity, int currentPassengers, boolean inService) {
-        this.id = id;
+        super(id, capacity, inService);
         this.routeNumber = routeNumber;
-        this.capacity = capacity;
         this.currentPassengers = Math.max(0, currentPassengers);
-        this.inService = inService;
     }
-
+    //возвращает тип класса
+    //@Override проверяет совпадает ли сигнатура и используемый метод через компилятор
+    @Override
+    public String getType() {
+        return "Bus";
+    }
+    //посадка
     public boolean board(int count) {
-        if (!inService || count <= 0) return false;
-        if (currentPassengers + count > capacity) return false;
+        if (!isInService() || count <= 0) return false;
+        if (currentPassengers + count > getCapacity()) return false;
         currentPassengers += count;
         return true;
     }
-
+    //высадка
     public boolean alight(int count) {
         if (count <= 0) return false;
         if (currentPassengers - count < 0) return false;
         currentPassengers -= count;
         return true;
     }
-
+    //метод который показывает полный ли автобус
     public boolean isFull() {
-        return currentPassengers >= capacity;
+        return currentPassengers >= getCapacity();
     }
 
     // getters/setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
     public String getRouteNumber() { return routeNumber; }
     public void setRouteNumber(String routeNumber) { this.routeNumber = routeNumber; }
 
-    public int getCapacity() { return capacity; }
-    public void setCapacity(int capacity) { this.capacity = Math.max(1, capacity); }
-
     public int getCurrentPassengers() { return currentPassengers; }
-    public void setCurrentPassengers(int currentPassengers) { this.currentPassengers = Math.max(0, currentPassengers); }
-
-    public boolean isInService() { return inService; }
-    public void setInService(boolean inService) { this.inService = inService; }
+    public void setCurrentPassengers(int currentPassengers) {
+        this.currentPassengers = Math.max(0, currentPassengers);
+    }
 
     @Override
     public String toString() {
         return "Bus{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", routeNumber='" + routeNumber + '\'' +
-                ", capacity=" + capacity +
+                ", capacity=" + getCapacity() +
                 ", currentPassengers=" + currentPassengers +
-                ", inService=" + inService +
+                ", inService=" + isInService() +
                 '}';
-    }
-
-    // Для сравнения объектов (equals/hashCode)
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Bus bus)) return false;
-        return Objects.equals(id, bus.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

@@ -6,14 +6,6 @@ public class Commuter {
     private double balance;
     private boolean hasActiveTicket;
 
-    public Commuter() {
-        this("UNKNOWN", "Anonymous", 0.0, false);
-    }
-
-    public Commuter(String id, String fullName) {
-        this(id, fullName, 0.0, false);
-    }
-
     public Commuter(String id, String fullName, double balance, boolean hasActiveTicket) {
         this.id = id;
         this.fullName = fullName;
@@ -47,7 +39,7 @@ public class Commuter {
     public double getBalance() { return balance; }
     public void setBalance(double balance) { this.balance = Math.max(0.0, balance); }
 
-    public boolean isHasActiveTicket() { return hasActiveTicket; }
+    public boolean hasActiveTicket() { return hasActiveTicket; }
     public void setHasActiveTicket(boolean hasActiveTicket) { this.hasActiveTicket = hasActiveTicket; }
 
     @Override
@@ -60,12 +52,11 @@ public class Commuter {
                 '}';
     }
 
-    // Для сравнения объектов
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Commuter that)) return false;
-        return Objects.equals(id, that.id);
+        if (!(o instanceof Commuter commuter)) return false;
+        return Objects.equals(id, commuter.id);
     }
 
     @Override
